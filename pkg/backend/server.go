@@ -11,6 +11,8 @@ type Server struct {
 }
 
 func (s *Server) Run(c *cfg.Config) error {
+	mux := http.NewServeMux()
+
 	apiHandler := func(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, "Yo\n")
 	}
@@ -18,8 +20,8 @@ func (s *Server) Run(c *cfg.Config) error {
 		io.WriteString(w, "Yo file\n")
 	}
 
-	http.HandleFunc("/api", apiHandler)
-	http.HandleFunc("/", fileHandler)
+	mux.HandleFunc("/api", apiHandler)
+	mux.HandleFunc("/", fileHandler)
 
-	return http.ListenAndServe(c.Address, nil)
+	return http.ListenAndServe(c.Address, mux)
 }
