@@ -13,6 +13,7 @@ func main() {
 
 	Task("buildFrontend").
 		Chdir("pkg/frontend").
+		Exec("npm", "i").
 		Exec("npm", "run", "build")
 
 	Task("watchBackend").
