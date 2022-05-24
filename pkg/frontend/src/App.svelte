@@ -12,7 +12,7 @@
 
 	async function poll() {
 		let s = await fetch("/api/services")
-		services = await s.json()
+		services = await s.json() || []
 		lastDate = new Date()
 		refresh()
 	}
@@ -37,13 +37,21 @@
 
 <main>
 	<h1>{title}</h1>
-	{#each services as service}
+	{#if services.length}
+		{#each services as service}
+			<article>
+				<header>{service.address}</header>
+				<section class={service.status}>{service.status}</section>
+				<aside>{service.delay/1000}ms</aside>
+			</article>
+		{/each}
+	{:else}
 		<article>
-			<header>{service.address}</header>
-			<section class={service.status}>{service.status}</section>
-			<aside>{service.delay/1000}ms</aside>
+			<header></header>
+			<section>no services</section>
+			<aside></aside>
 		</article>
-	{/each}
+	{/if}
 	<h4>updated {lastMoment}</h4>
 </main>
 <footer><a href="https://github.com/kettek/pingmon">pingmon</a> copyright © 2022 <a href="https://kettek.net">Ketchetwahmeegwun T. Southall</a>. Licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a></footer>
