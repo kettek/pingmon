@@ -1,5 +1,18 @@
 <script lang="ts">
-	export let name: string;
+	import type { Service } from './types/service'
+
+	export let services: Service[]
+
+	function getStatusString(service: Service): string {
+		if (service.status === 'offline') {
+			return 'Offline'
+		} else if (service.status === 'online') {
+			return 'Online'
+		} else if (service.status === 'pending') {
+			return 'Pending'
+		}
+		return 'Unknown'
+	}
 </script>
 
 <main>
@@ -7,7 +20,8 @@
 	{#each services as service}
 		<article>
 			<header>{service.name}</header>
-			<section class:offline={service.offline}>{service.offline?'Offline':'Online'}</section>
+			<aside>{service.address}</aside>
+			<section class:offline={service.status==='offline'}>{getStatusString(service)}</section>
 		</article>
 	{/each}
 </main>
@@ -29,8 +43,16 @@
 
 	article {
 		display: grid;
-		grid-template-columns: auto minmax(0, 1fr);
+		grid-template-columns: auto auto minmax(0, 1fr);
 		grid-template-rows: minmax(0, 1fr);
+	}
+
+	header {
+		font-weight: bold;
+	}
+
+	aside {
+		opacity: 0.75;
 	}
 
 	@media (min-width: 640px) {
