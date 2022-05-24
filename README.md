@@ -1,6 +1,8 @@
 # Introduction
 pingmon is a backend and frontend combination to ping a list of addresses to see if they are alive. Pinging can be done through TCP, UDP, or ICMP pings. A list of servers are defined through a configuration file that the backend pings over time and serves their status via a frontend HTTP service.
 
+![pingmon browser view](screenshot.png)
+
 # Building
 
 ## Requisites
