@@ -58,8 +58,8 @@ func (s *Server) PokeLoop(c *Config) {
 		if c.Targets != nil {
 			for _, t := range *c.Targets {
 				if t.Method == "tcp" || t.Method == "udp" {
-					_, err := net.DialTimeout(t.Method, fmt.Sprintf("%s:%d", t.Address, t.Port), time.Duration(*c.Timeout)*time.Second)
 					start := time.Now()
+					_, err := net.DialTimeout(t.Method, fmt.Sprintf("%s:%d", t.Address, t.Port), time.Duration(*c.Timeout)*time.Second)
 					if err != nil {
 						t.Status = "offline"
 					} else {
