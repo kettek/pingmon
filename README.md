@@ -28,6 +28,7 @@ rate: 10                    // Ping every 10 seconds
 timeout: 1                  // Timeout pings after 1 second
 privilegedPing: true        // Use a privileged ping. See permissions.
 targets:
+  - myaddress               // defaults to tcp:myaddress:80
   - tcp:myaddress           // defaults to 80
   - udp:myaddress           // defaults to 53
   - tcp:myaddress:port
