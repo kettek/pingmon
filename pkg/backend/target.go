@@ -1,13 +1,16 @@
 package backend
 
 import (
+	"strconv"
 	"strings"
 )
 
 type Target struct {
-	Method  string
-	Address string
-	Port    string
+	Method  string  `json:"method"`
+	Address string  `json:"address"`
+	Port    int     `json:"port"`
+	Status  string  `json:"status"`
+	Delay   float64 `json:"delay"`
 }
 
 func (t *Target) UnmarshalYAML(unmarshal func(interface{}) error) error {
@@ -25,12 +28,12 @@ func (t *Target) UnmarshalYAML(unmarshal func(interface{}) error) error {
 		t.Address = parts[1]
 	}
 	if len(parts) >= 3 {
-		t.Port = parts[2]
+		t.Port, _ = strconv.Atoi(parts[2])
 	} else {
 		if t.Method == "tcp" {
-			t.Port = "80"
+			t.Port = 80
 		} else if t.Method == "udp" {
-			t.Port = "53"
+			t.Port = 53
 		}
 	}
 

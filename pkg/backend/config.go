@@ -7,9 +7,11 @@ import (
 )
 
 type Config struct {
-	Targets *[]Target `yaml:"targets"`
-	Address *string   `yaml:"address"`
-	Assets  *string   `yaml:"assets"`
+	Rate    int        `yaml:"rate"`
+	Timeout *int       `yaml:"timeout"`
+	Targets *[]*Target `yaml:"targets"`
+	Address *string    `yaml:"address"`
+	Assets  *string    `yaml:"assets"`
 }
 
 var DefaultConfig Config = Config{}
@@ -17,8 +19,11 @@ var DefaultConfig Config = Config{}
 func init() {
 	addr := ":8999"
 	assets := "./pkg/frontend/public"
+	timeout := 5
 	DefaultConfig.Address = &addr
 	DefaultConfig.Assets = &assets
+	DefaultConfig.Rate = 30
+	DefaultConfig.Timeout = &timeout
 }
 
 func (c *Config) FromYAML(p string) error {
@@ -41,6 +46,12 @@ func (c *Config) FromYAML(p string) error {
 	}
 	if c2.Targets != nil {
 		c.Targets = c2.Targets
+	}
+	if c2.Timeout != nil {
+		c.Timeout = c2.Timeout
+	}
+	if c2.Rate != 0 {
+		c.Rate = c2.Rate
 	}
 
 	return nil
