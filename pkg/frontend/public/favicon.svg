@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       id="filter6418"
+       x="-0.39375"
+       y="-0.39375"
+       width="1.7875"
+       height="1.7875">
+      <feFlood
+         flood-opacity="1"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood6408" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite6410" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="1"
+         result="blur"
+         id="feGaussianBlur6412" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset6414" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite6416" />
+    </filter>
+    <filter
+       style="color-interpolation-filters:sRGB;"
+       id="filter6430"
+       x="-0.39375"
+       y="-0.7875"
+       width="1.7875"
+       height="2.575">
+      <feFlood
+         flood-opacity="1"
+         flood-color="rgb(0,0,0)"
+         result="flood"
+         id="feFlood6420" />
+      <feComposite
+         in="flood"
+         in2="SourceGraphic"
+         operator="in"
+         result="composite1"
+         id="feComposite6422" />
+      <feGaussianBlur
+         in="composite1"
+         stdDeviation="1"
+         result="blur"
+         id="feGaussianBlur6424" />
+      <feOffset
+         dx="0"
+         dy="0"
+         result="offset"
+         id="feOffset6426" />
+      <feComposite
+         in="SourceGraphic"
+         in2="offset"
+         operator="over"
+         result="composite2"
+         id="feComposite6428" />
+    </filter>
+  </defs>
+  <g
+     id="layer1">
+    <ellipse
+       style="fill:#35485a;fill-opacity:1;stroke:#4a4a62;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1.65;stroke-opacity:1;filter:url(#filter6430)"
+       id="path269"
+       cx="16"
+       cy="26"
+       rx="4"
+       ry="2" />
+    <circle
+       style="fill:#5582ff;fill-opacity:1;stroke:#686fdf;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1.65;stroke-opacity:1;filter:url(#filter6418)"
+       id="path255"
+       cx="16"
+       cy="8"
+       r="4" />
+    <circle
+       style="fill:#273545;fill-opacity:1;stroke:#414570;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dashoffset:1.65;stroke-opacity:1"
+       id="path2221"
+       cx="16"
+       cy="10"
+       r="2" />
+  </g>
+  <g
+     id="layer2" />
+</svg>
