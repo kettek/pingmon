@@ -16,12 +16,10 @@ func (s *Server) Run(c *cfg.Config) error {
 	apiHandler := func(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, "Yo\n")
 	}
-	fileHandler := func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, "Yo file\n")
-	}
+	fileHandler := http.FileServer(http.Dir("./pkg/frontend/public"))
 
 	mux.HandleFunc("/api", apiHandler)
-	mux.HandleFunc("/", fileHandler)
+	mux.Handle("/", fileHandler)
 
 	return http.ListenAndServe(c.Address, mux)
 }
