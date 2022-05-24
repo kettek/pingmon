@@ -6,17 +6,17 @@ import (
 
 func main() {
 	Task("buildBackend").
-		Exec("go", "build", "-v", "./cmd/server")
+		Exec("go", "build", "-v", "./cmd/pingmon")
 
 	Task("runBackend").
-		Exec("./server")
+		Exec("./pingmond")
 
 	Task("buildFrontend").
 		Chdir("pkg/frontend").
 		Exec("npm", "run", "build")
 
 	Task("watchBackend").
-		Watch("cmd/server/*", "pkg/backend/*.go").
+		Watch("cmd/pingmon/*", "pkg/backend/*.go").
 		Signaler(SigQuit).
 		Run("buildBackend").
 		Run("runBackend")
@@ -25,6 +25,13 @@ func main() {
 		Watch("pkg/frontend/src/*.*").
 		Signaler(SigQuit).
 		Run("buildFrontend")
+
+	Task("installSystemdUnit").
+		Exec("mkdir", "-p", "/opt/pingmon/public").
+		Exec("cp", "pingmon", "/opt/pingmon/").
+		Exec("cp", "-r", "pkg/frontend/public", "/opt/pingmon/").
+		Exec("cp", "-n", "extra/cfg.yml", "/opt/pingmon/").
+		Exec("cp", "extra/pingmon.service", "/etc/systemd/system/")
 
 	Go()
 }
