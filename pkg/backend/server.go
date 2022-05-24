@@ -21,7 +21,14 @@ func (s *Server) Run(c *Config) error {
 
 	mux := http.NewServeMux()
 
-	apiHandler := func(w http.ResponseWriter, req *http.Request) {
+	apiServerHandler := func(w http.ResponseWriter, req *http.Request) {
+		b, err := json.Marshal(c.Title)
+		if err != nil {
+			panic(err)
+		}
+		io.WriteString(w, string(b))
+	}
+	apiServicesHandler := func(w http.ResponseWriter, req *http.Request) {
 		b, err := json.Marshal(c.Targets)
 		if err != nil {
 			panic(err)
@@ -30,7 +37,8 @@ func (s *Server) Run(c *Config) error {
 	}
 	fileHandler := http.FileServer(http.Dir(*c.Assets))
 
-	mux.HandleFunc("/api/", apiHandler)
+	mux.HandleFunc("/api/title", apiServerHandler)
+	mux.HandleFunc("/api/services", apiServicesHandler)
 	mux.Handle("/", fileHandler)
 
 	go s.PokeLoop(c)

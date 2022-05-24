@@ -6,12 +6,19 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Title struct {
+	Prefix *string `yaml:"prefix"`
+	Name   *string `yaml:"name"`
+	Suffix *string `yaml:"suffix"`
+}
+
 type Config struct {
 	Rate    int        `yaml:"rate"`
 	Timeout *int       `yaml:"timeout"`
 	Targets *[]*Target `yaml:"targets"`
 	Address *string    `yaml:"address"`
 	Assets  *string    `yaml:"assets"`
+	Title   *Title     `yaml:"title"`
 }
 
 var DefaultConfig Config = Config{}
@@ -24,6 +31,15 @@ func init() {
 	DefaultConfig.Assets = &assets
 	DefaultConfig.Rate = 30
 	DefaultConfig.Timeout = &timeout
+
+	prefix := ""
+	name := "pingmon"
+	suffix := ""
+	DefaultConfig.Title = &Title{
+		Prefix: &prefix,
+		Name:   &name,
+		Suffix: &suffix,
+	}
 }
 
 func (c *Config) FromYAML(p string) error {
@@ -52,6 +68,17 @@ func (c *Config) FromYAML(p string) error {
 	}
 	if c2.Rate != 0 {
 		c.Rate = c2.Rate
+	}
+	if c2.Title != nil {
+		if c2.Title.Name != nil {
+			c.Title.Name = c2.Title.Name
+		}
+		if c2.Title.Prefix != nil {
+			c.Title.Prefix = c2.Title.Prefix
+		}
+		if c2.Title.Suffix != nil {
+			c.Title.Suffix = c2.Title.Suffix
+		}
 	}
 
 	return nil

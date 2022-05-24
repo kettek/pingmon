@@ -6,11 +6,12 @@
 
 	let services: Service[] = []
 
+	let title: string = 'pingmon'
 	let lastDate: Date = new Date()
 	let lastMoment: string = ''
 
 	async function poll() {
-		let s = await fetch("/api")
+		let s = await fetch("/api/services")
 		services = await s.json()
 		lastDate = new Date()
 		refresh()
@@ -24,14 +25,18 @@
 	setTimeout(poll, 30000)
 	setTimeout(refresh, 500)
 
-	onMount(() => {
+	onMount(async () => {
 		poll()
 		refresh()
+
+		let s = await (await fetch("/api/title")).json()
+		title = s.Name
+		document.title = `${s.Prefix}${s.Name}${s.Suffix}`
 	})
 </script>
 
 <main>
-	<h1>pingmon</h1>
+	<h1>{title}</h1>
 	{#each services as service}
 		<article>
 			<header>{service.address}</header>
