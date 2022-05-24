@@ -68,6 +68,7 @@ func (s *Server) PokeLoop(c *Config) {
 					t.Delay = float64(time.Now().Sub(start).Microseconds())
 				} else if t.Method == "ping" {
 					pinger, err := ping.NewPinger(t.Address)
+					pinger.SetPrivileged(*c.PrivilegedPing)
 					if err != nil {
 						t.Status = "error"
 						continue

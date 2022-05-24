@@ -13,12 +13,13 @@ type Title struct {
 }
 
 type Config struct {
-	Rate    int        `yaml:"rate"`
-	Timeout *int       `yaml:"timeout"`
-	Targets *[]*Target `yaml:"targets"`
-	Address *string    `yaml:"address"`
-	Assets  *string    `yaml:"assets"`
-	Title   *Title     `yaml:"title"`
+	Rate           int        `yaml:"rate"`
+	Timeout        *int       `yaml:"timeout"`
+	Targets        *[]*Target `yaml:"targets"`
+	Address        *string    `yaml:"address"`
+	Assets         *string    `yaml:"assets"`
+	Title          *Title     `yaml:"title"`
+	PrivilegedPing *bool      `yaml:"privilegedPing"`
 }
 
 var DefaultConfig Config = Config{}
@@ -27,10 +28,12 @@ func init() {
 	addr := ":8999"
 	assets := "./pkg/frontend/public"
 	timeout := 5
+	privilegedPing := false
 	DefaultConfig.Address = &addr
 	DefaultConfig.Assets = &assets
 	DefaultConfig.Rate = 30
 	DefaultConfig.Timeout = &timeout
+	DefaultConfig.PrivilegedPing = &privilegedPing
 
 	prefix := ""
 	name := "pingmon"
@@ -79,6 +82,9 @@ func (c *Config) FromYAML(p string) error {
 		if c2.Title.Suffix != nil {
 			c.Title.Suffix = c2.Title.Suffix
 		}
+	}
+	if c2.PrivilegedPing != nil {
+		c.PrivilegedPing = c2.PrivilegedPing
 	}
 
 	return nil
