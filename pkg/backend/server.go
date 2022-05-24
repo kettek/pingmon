@@ -80,6 +80,8 @@ func (s *Server) PokeLoop(c *Config) {
 					if err := pinger.Run(); err != nil {
 						fmt.Println(err)
 						t.Status = "offline"
+					} else if pinger.Statistics().PacketsRecv == 0 {
+						t.Status = "offline"
 					} else {
 						t.Status = "online"
 					}
