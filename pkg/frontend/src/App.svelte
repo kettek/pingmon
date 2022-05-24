@@ -1,29 +1,35 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
-	import moment from 'moment'
 
 	import type { Service } from './types/service'
 
 	let services: Service[] = []
 
 	let title: string = 'pingmon'
-	let lastDate: Date = new Date()
+	let lastDate: number = Date.now()
 	let lastMoment: string = ''
 
 	async function poll() {
-		let s = await fetch("/api/services")
-		services = await s.json() || []
-		lastDate = new Date()
-		refresh()
-	}
-	
-	function refresh() {
-		lastMoment = moment(lastDate).fromNow()
+		try {
+			let s = await (await fetch("/api/services")).json()
+			services = s.targets || []
+			lastDate = Date.now() - s.elapsed
+			refresh()
+		} catch(err) {
+			services = []
+			console.error(err)
+		}
 	}
 
-	// Poll the API every 30 seconds.
-	setTimeout(poll, 30000)
-	setTimeout(refresh, 500)
+	const rtf = new Intl.RelativeTimeFormat(undefined, { style: 'long'})
+	
+	function refresh() {
+		lastMoment = rtf.format(-Math.round((Date.now() - lastDate)/1000), 'seconds')
+	}
+
+	// Poll the API every 10 seconds.
+	setInterval(poll, 10000)
+	setInterval(refresh, 500)
 
 	onMount(async () => {
 		poll()

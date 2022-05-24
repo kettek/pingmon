@@ -12,8 +12,9 @@ import (
 )
 
 type Server struct {
-	server   *http.Server
-	ExitChan chan struct{}
+	server        *http.Server
+	lastTimestamp time.Time
+	ExitChan      chan struct{}
 }
 
 func (s *Server) Run(c *Config) error {
@@ -29,7 +30,13 @@ func (s *Server) Run(c *Config) error {
 		io.WriteString(w, string(b))
 	}
 	apiServicesHandler := func(w http.ResponseWriter, req *http.Request) {
-		b, err := json.Marshal(c.Targets)
+		b, err := json.Marshal(struct {
+			Elapsed time.Duration `json:"elapsed"`
+			Targets *[]*Target    `json:"targets"`
+		}{
+			Targets: c.Targets,
+			Elapsed: time.Duration(time.Now().Sub(s.lastTimestamp).Milliseconds()),
+		})
 		if err != nil {
 			panic(err)
 		}
@@ -89,6 +96,8 @@ func (s *Server) PokeLoop(c *Config) {
 				}
 			}
 		}
+
+		s.lastTimestamp = time.Now()
 
 		// Sleep a while.
 		time.Sleep(time.Duration(c.Rate) * time.Second)
