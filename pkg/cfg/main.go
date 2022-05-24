@@ -6,4 +6,5 @@ import (
 
 type Config struct {
 	Targets []pinger.Target `yaml:"targets"`
+	Address string          `yaml:"address"`
 }
