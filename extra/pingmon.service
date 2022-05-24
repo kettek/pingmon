@@ -1,0 +1,18 @@
+[Unit]
+Description=pingmon service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/pingmon/pingmon
+WorkingDirectory=/opt/pingmon
+CapabilityBoundingSet=CAP_NET_RAW
+AmbientCapabilities=CAP_NET_RAW
+ProtectSystem=true
+ProtectHome=true
+Restart=on-failure
+User=daemon
+Group=daemon
+
+[Install]
+WantedBy=multi-user.target
