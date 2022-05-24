@@ -1,63 +1,96 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
+	import moment from 'moment'
+
 	import type { Service } from './types/service'
 
-	export let services: Service[] = []
+	let services: Service[] = []
 
-	function getStatusString(service: Service): string {
-		if (service.status === 'offline') {
-			return 'Offline'
-		} else if (service.status === 'online') {
-			return 'Online'
-		} else if (service.status === 'pending') {
-			return 'Pending'
-		}
-		return 'Unknown'
+	let lastDate: Date = new Date()
+	let lastMoment: string = ''
+
+	async function poll() {
+		let s = await fetch("/api")
+		services = await s.json()
+		lastDate = new Date()
+		refresh()
 	}
+	
+	function refresh() {
+		lastMoment = moment(lastDate).fromNow()
+	}
+
+	// Poll the API every 30 seconds.
+	setTimeout(poll, 30000)
+	setTimeout(refresh, 500)
+
+	onMount(() => {
+		poll()
+		refresh()
+	})
 </script>
 
 <main>
-	<h1>Service Pinger</h1>
+	<h1>pingmon</h1>
 	{#each services as service}
 		<article>
-			<header>{service.name}</header>
-			<aside>{service.address}</aside>
-			<section class:offline={service.status==='offline'}>{getStatusString(service)}</section>
+			<header>{service.address}</header>
+			<section class={service.status}>{service.status}</section>
+			<aside>{service.delay/1000}ms</aside>
 		</article>
 	{/each}
+	<h4>updated {lastMoment}</h4>
 </main>
+<footer><a href="https://github.com/kettek/pingmon">pingmon</a> copyright © 2022 <a href="https://kettek.net">Ketchetwahmeegwun T. Southall</a>. Licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a></footer>
 
 <style>
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
 		margin: 0 auto;
+		max-width: 35em;
 	}
 
 	h1 {
-		color: #ff3e00;
+		color: #003eff;
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
 	}
 
+	h4 {
+		font-weight: 100;
+	}
+
 	article {
 		display: grid;
-		grid-template-columns: auto auto minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr) 10em minmax(0, 1fr);
 		grid-template-rows: minmax(0, 1fr);
 	}
 
 	header {
 		font-weight: bold;
+		text-align: left;
+	}
+
+	section.offline {
+		color: rgb(255, 0, 0);
+	}
+	section.online {
+		color: rgba(0, 255, 0);
+	}
+	section.pending {
+		color: rgb(255, 255, 0);
 	}
 
 	aside {
 		opacity: 0.75;
+		text-align: right;
 	}
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	footer {
+		text-align: center;
+		opacity: 0.75;
+		font-size: 80%;
 	}
 </style>
