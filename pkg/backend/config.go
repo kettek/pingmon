@@ -28,7 +28,7 @@ func init() {
 	addr := ":8999"
 	assets := "./pkg/frontend/public"
 	timeout := 5
-	privilegedPing := false
+	privilegedPing := true
 	DefaultConfig.Address = &addr
 	DefaultConfig.Assets = &assets
 	DefaultConfig.Rate = 30
