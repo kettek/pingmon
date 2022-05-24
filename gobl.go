@@ -9,7 +9,7 @@ func main() {
 		Exec("go", "build", "-v", "./cmd/pingmon")
 
 	Task("runBackend").
-		Exec("./pingmond")
+		Exec("./pingmon")
 
 	Task("buildFrontend").
 		Chdir("pkg/frontend").
