@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Service } from './types/service'
 
-	export let services: Service[]
+	export let services: Service[] = []
 
 	function getStatusString(service: Service): string {
 		if (service.status === 'offline') {
