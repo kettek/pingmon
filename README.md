@@ -2,6 +2,14 @@
 pingmon is a backend and frontend combination to ping a list of addresses to see if they are alive. Pinging can be done through TCP, UDP, or ICMP pings. A list of servers are defined through a configuration file that the backend pings over time and serves their status via a frontend HTTP service.
 
 # Building
+
+## Requisites
+
+  * node/npm of at least 2020
+  * go of at least 1.17
+
+## Build
+
 pingmon uses the gobl build system. If you have go installed, both the backend and frontend can be built by issuing:
 
 ```
