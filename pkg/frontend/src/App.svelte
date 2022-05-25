@@ -9,9 +9,39 @@
 	let lastDate: number = Date.now()
 	let lastMoment: string = ''
 
+	async function notifyStatus(service: Service) {
+		if (!('Notification' in window)) {
+			console.log('notifications unsupported')
+			return
+		}
+		if (Notification.permission !== 'granted') {
+			if (await Notification.requestPermission() !== 'granted') {
+				console.log('notifications rejected')
+				return
+			}
+		}
+		new Notification(`${service.address} ${service.status}`, {
+			icon: '/favicon.svg',
+			tag: `${service.address}:${service.port}`,
+			requireInteraction: true,
+			body: `${service.method}:${service.address}:${service.port} is now ${service.status} @ ${service.delay/1000}ms`,
+			timestamp: Date.now(),
+		})
+	}
+
 	async function poll() {
 		try {
 			let s = await (await fetch("/api/services")).json()
+			if (services.length > 0 ) {
+				for (let service of services) {
+					let t = s.targets.find(v=>v.method === service.method && v.address === service.address && v.port === service.port)
+					if (t) {
+						if (service.status !== t.status) {
+							notifyStatus(t)
+						}
+					}
+				}
+			}
 			services = s.targets || []
 			lastDate = Date.now() - s.elapsed
 			refresh()
