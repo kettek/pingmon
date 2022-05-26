@@ -5,7 +5,11 @@
 
 	let services: Service[] = []
 
-	let title: string = 'pingmon'
+	let title: {
+		Prefix: string
+		Suffix: string
+		Name: string
+	} = {Prefix: '', Suffix: '', Name: 'pingmon'}
 	let lastDate: number = Date.now()
 	let lastMoment: string = ''
 
@@ -44,6 +48,7 @@
 			}
 			services = s.targets || []
 			lastDate = Date.now() - s.elapsed
+			updateTitle()
 			refresh()
 		} catch(err) {
 			services = []
@@ -57,6 +62,10 @@
 		lastMoment = rtf.format(-Math.round((Date.now() - lastDate)/1000), 'seconds')
 	}
 
+	function updateTitle() {
+		document.title = `(${services.filter(v=>v.status==='online').length}/${services.length}) ${title.Prefix}${title.Name}${title.Suffix}`
+	}
+
 	// Poll the API every 10 seconds.
 	setInterval(poll, 10000)
 	setInterval(refresh, 500)
@@ -66,13 +75,13 @@
 		refresh()
 
 		let s = await (await fetch("/api/title")).json()
-		title = s.Name
-		document.title = `${s.Prefix}${s.Name}${s.Suffix}`
+		title = s
+		updateTitle()
 	})
 </script>
 
 <main>
-	<h1>{title}</h1>
+	<h1>{title.Name}</h1>
 	{#if services.length}
 		{#each services as service}
 			<article>
