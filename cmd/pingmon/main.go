@@ -3,11 +3,12 @@ package main
 import (
 	"log"
 	"pingmon/pkg/backend"
+	"pingmon/pkg/core"
 )
 
 func main() {
 	s := backend.Server{}
-	c := &backend.DefaultConfig
+	c := &core.DefaultConfig
 
 	if err := c.FromYAML("cfg.yml"); err != nil {
 		log.Println(err)
@@ -25,5 +26,4 @@ func main() {
 	if err := s.Run(c); err != nil {
 		log.Fatal(err)
 	}
-	log.Println("running...")
 }
