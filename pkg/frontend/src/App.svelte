@@ -33,9 +33,16 @@
 		})
 	}
 
-	async function poll() {
-		try {
-			let s = await (await fetch("/api/services")).json()
+	let wsConnected: boolean = false
+	async function ws() {
+		let u = `${window.location.protocol==='https:'?'wss':'ws'}://${window.location.host}${window.location.pathname!=='/'?window.location.pathname:''}/ws`
+		let socket = new WebSocket(u)
+		socket.onopen = (ev: Event) => {
+			wsConnected = true
+			wsStopReconnect()
+		}
+		socket.onmessage = (ev: MessageEvent) => {
+			let s = JSON.parse(ev.data)
 			if (services.length > 0 ) {
 				for (let service of services) {
 					let t = s.targets.find(v=>v.method === service.method && v.address === service.address && v.port === service.port)
@@ -50,10 +57,29 @@
 			lastDate = Date.now() - s.elapsed
 			updateTitle()
 			refresh()
-		} catch(err) {
-			services = []
-			console.error(err)
 		}
+		socket.onerror = (ev: ErrorEvent) => {
+			services = []
+			console.error(ev)
+			wsStartReconnect()
+		}
+		socket.onclose = (ev: CloseEvent) => {
+			wsConnected = false
+			wsStartReconnect()
+		}
+	}
+
+	let wsReconnectTimer: NodeJS.Timer
+	function wsStartReconnect() {
+		if (wsReconnectTimer) return
+		wsReconnectTimer = setInterval(() => {
+			ws()
+		}, 5000)
+	}
+	function wsStopReconnect() {
+		if (!wsReconnectTimer) return
+		clearInterval(wsReconnectTimer)
+		wsReconnectTimer = null
 	}
 
 	const rtf = new Intl.RelativeTimeFormat(undefined, { style: 'long'})
@@ -66,17 +92,16 @@
 		document.title = `(${services.filter(v=>v.status==='online').length}/${services.length}) ${title.Prefix}${title.Name}${title.Suffix}`
 	}
 
-	// Poll the API every 10 seconds.
-	setInterval(poll, 10000)
-	setInterval(refresh, 500)
-
 	onMount(async () => {
-		poll()
+		ws()
 		refresh()
 
 		let s = await (await fetch("/api/title")).json()
 		title = s
 		updateTitle()
+
+		// Refresh UI every second.
+		setInterval(refresh, 1000)
 	})
 </script>
 
@@ -93,7 +118,13 @@
 	{:else}
 		<article>
 			<header></header>
-			<section>no services</section>
+			<section>
+				{#if !wsConnected}
+					disconnected
+				{:else}
+					no services
+				{/if}
+			</section>
 			<aside></aside>
 		</article>
 	{/if}
