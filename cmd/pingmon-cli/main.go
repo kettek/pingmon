@@ -25,15 +25,22 @@ func main() {
 
 	for _, t := range *c.Targets {
 		if t.Status == "online" {
-			fmt.Printf("👌")
+			fmt.Printf("👌 ")
 		} else if t.Status == "offline" {
-			fmt.Printf("👎")
+			fmt.Printf("👎 ")
 		} else if t.Status == "error" {
-			fmt.Printf("👎")
+			fmt.Printf("👎 ")
 		} else {
-			fmt.Printf("✋")
+			fmt.Printf("✋ ")
 		}
-		fmt.Printf(" %s @ %fms\n", t.Address, t.Delay/1024)
+		if *c.ShowMethods {
+			fmt.Printf("%s:", t.Method)
+		}
+		fmt.Printf(t.Address)
+		if *c.ShowPorts {
+			fmt.Printf(":%d", t.Port)
+		}
+		fmt.Printf(" @ %fms\n", t.Delay/1024)
 		if t.ExtendedStatus != "" {
 			fmt.Printf("  👉 %s\n", t.ExtendedStatus)
 		}
