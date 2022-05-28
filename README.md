@@ -36,6 +36,8 @@ targets:
   - tcp:myaddress:port
   - udp:myaddress:port
   - ping:myaddress          // send ICMP ping
+  - tls:myaddress           // Attempt SSL/TLS handshaking. defaults to 443
+  - tls:myaddress:port
 address: "*:8888"           // Listen to on all addresses on port 8888
 assets: pkg/frontend/public // Look for frontend assets in this directory.
 title:                      // will print "> pingmon <" in the browser
