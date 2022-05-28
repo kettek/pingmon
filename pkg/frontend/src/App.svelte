@@ -111,7 +111,7 @@
 		{#each services as service}
 			<article>
 				<header>{service.address}</header>
-				<section class={service.status}>{service.status}</section>
+				<section class="{service.status} {service.extendedStatus?'extended':''}" title="{service.extendedStatus}">{service.status}</section>
 				<aside>{service.delay/1000}ms</aside>
 			</article>
 		{/each}
@@ -162,13 +162,17 @@
 		text-align: left;
 	}
 
-	section.offline {
-		color: rgb(255, 0, 0);
+	section.extended {
+		text-decoration-line: underline;
+		text-decoration-style: dotted;
+	}
+	section.offline, section.error {
+		color: rgb(255, 0, 0) !important;
 	}
 	section.online {
-		color: rgba(0, 255, 0);
+		color: rgba(0, 255, 0) !important;
 	}
-	section.pending {
+	section.expired, section.untrusted {
 		color: rgb(255, 255, 0);
 	}
 

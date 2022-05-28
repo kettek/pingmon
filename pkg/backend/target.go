@@ -6,11 +6,12 @@ import (
 )
 
 type Target struct {
-	Method  string  `json:"method"`
-	Address string  `json:"address"`
-	Port    int     `json:"port"`
-	Status  string  `json:"status"`
-	Delay   float64 `json:"delay"`
+	Method         string  `json:"method"`
+	Address        string  `json:"address"`
+	Port           int     `json:"port"`
+	Status         string  `json:"status"`
+	ExtendedStatus string  `json:"extendedStatus"`
+	Delay          float64 `json:"delay"`
 }
 
 func (t *Target) UnmarshalYAML(unmarshal func(interface{}) error) error {
@@ -39,6 +40,8 @@ func (t *Target) UnmarshalYAML(unmarshal func(interface{}) error) error {
 				t.Port = 80
 			} else if t.Method == "udp" {
 				t.Port = 53
+			} else if t.Method == "tls" {
+				t.Port = 443
 			}
 		}
 	}
