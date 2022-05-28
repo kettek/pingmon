@@ -1,16 +1,19 @@
-# Introduction
+# pingmon
+[![Go Reference](https://pkg.go.dev/badge/github.com/kettek/pingmon.svg)](https://pkg.go.dev/github.com/kettek/pingmon)
+
+## Introduction
 pingmon is a *backend and frontend service* (**pingmon**), a *cli tool* (**pingmon-cli**), or a *system tray item* (**pingmon-systray**) that can ping a list of addresses to see if they are alive. Pinging can be done through TCP, UDP, or ICMP pings. Additionally, TLS handshaking can be done through TCP. A list of servers are defined through a configuration file that the backend pings over time and serves their status via a frontend HTTP service.
 
 ![pingmon browser view](screenshot.png)
 
-# Building
+## Building
 
-## Requisites
+### Requisites
 
   * node/npm of at least 2020
   * go of at least 1.17
 
-## Build
+### Build
 
 pingmon uses the gobl build system. If you have go installed, both the backend and frontend can be built by issuing:
 
@@ -21,10 +24,10 @@ go run . buildFrontend
 
 Once this is done, you can run the corresponding `pingmon` program.
 
-# Configuration
+## Configuration
 Configuration is done through a simple yaml file in the working directory named `cfg.yml`. The following example should give a good idea of how it works.
 
-## Complete Example
+### Complete Example
 ```yaml
 rate: 10                    // Ping every 10 seconds
 timeout: 1                  // Timeout pings after 1 second
@@ -46,10 +49,10 @@ title:                      // will print "> pingmon <" in the browser
   suffix: " <"
 ```
 
-# API
+## API
 The backend exposes some HTTP APIs that can be used to access pingmon's information.
 
-## /api/title
+### /api/title
 This returns a JSON structure representing the title information for the pingmon instance.
 
 ```json
@@ -60,7 +63,7 @@ This returns a JSON structure representing the title information for the pingmon
 }
 ```
 
-## /api/services
+### /api/services
 This endpoint returns a JSON structure matching the following:
 
 ```json
@@ -80,9 +83,9 @@ This endpoint returns a JSON structure matching the following:
 }
 ```
 
-# Service Installation
+## Service Installation
 
-## Linux (gobl)
+### Linux (gobl)
 pingmon can be installed to the system and a systemd unit installed by simply issuing:
 
 ```
@@ -95,7 +98,7 @@ After this, you can start and enable pingmon:
 sudo systemctl enable --now pingmon
 ```
 
-## Linux (manual)
+### Linux (manual)
 If you wish to run as a service, you can copy the provided `extra/pingmon.service` into `/etc/systemd/system/` or otherwise. If you install pingmon into a different location instead of the default, then modify the service file accordingly.
 
 File installation is most readily done from within the `pingmon` source directory:
