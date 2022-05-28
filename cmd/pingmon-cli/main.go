@@ -23,9 +23,18 @@ func main() {
 	core.RefreshTargets(c)
 
 	for _, t := range *c.Targets {
-		fmt.Printf("%s: %s @ %fms\n", t.Address, t.Status, t.Delay/1024)
+		if t.Status == "online" {
+			fmt.Printf("👌")
+		} else if t.Status == "offline" {
+			fmt.Printf("👎")
+		} else if t.Status == "error" {
+			fmt.Printf("👎")
+		} else {
+			fmt.Printf("✋")
+		}
+		fmt.Printf(" %s @ %fms\n", t.Address, t.Delay/1024)
 		if t.ExtendedStatus != "" {
-			fmt.Printf("\t%s\n", t.ExtendedStatus)
+			fmt.Printf("  👉 %s\n", t.ExtendedStatus)
 		}
 	}
 }
