@@ -4,7 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"pingmon/pkg/core"
+
+	"github.com/kettek/pingmon/pkg/core"
 )
 
 func main() {

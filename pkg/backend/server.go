@@ -2,9 +2,10 @@ package backend
 
 import (
 	"net/http"
-	"pingmon/pkg/core"
 	"sync"
 	"time"
+
+	"github.com/kettek/pingmon/pkg/core"
 
 	"golang.org/x/net/websocket"
 )

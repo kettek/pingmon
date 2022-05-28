@@ -2,8 +2,9 @@ package main
 
 import (
 	"log"
-	"pingmon/pkg/backend"
-	"pingmon/pkg/core"
+
+	"github.com/kettek/pingmon/pkg/backend"
+	"github.com/kettek/pingmon/pkg/core"
 )
 
 func main() {

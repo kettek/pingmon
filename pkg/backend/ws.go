@@ -1,8 +1,9 @@
 package backend
 
 import (
-	"pingmon/pkg/core"
 	"time"
+
+	"github.com/kettek/pingmon/pkg/core"
 
 	"golang.org/x/net/websocket"
 )

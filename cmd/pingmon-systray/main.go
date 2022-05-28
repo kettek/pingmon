@@ -4,9 +4,10 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"pingmon/pkg/core"
 	"sync"
 	"time"
+
+	"github.com/kettek/pingmon/pkg/core"
 
 	"github.com/getlantern/systray"
 )

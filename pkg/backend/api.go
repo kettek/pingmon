@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
-	"pingmon/pkg/core"
 	"time"
+
+	"github.com/kettek/pingmon/pkg/core"
 )
 
 func (s *Server) handleTitleAPI(w http.ResponseWriter, req *http.Request) {
