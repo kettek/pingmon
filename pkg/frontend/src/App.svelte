@@ -114,7 +114,13 @@
 	{#if services.length}
 		{#each services as service}
 			<article>
-				<header>{(showMethods?service.method+':':'')+service.address+(showPorts?':'+service.port:'')}</header>
+				<header>
+					{#if service.name}
+						{service.name}
+					{:else}
+						{(showMethods?service.method+':':'')+service.address+(showPorts?':'+service.port:'')}
+					{/if}
+				</header>
 				<section class="{service.status} {service.extendedStatus?'extended':''}" title="{service.extendedStatus}">{service.status}</section>
 				<aside>{service.delay/1000}ms</aside>
 			</article>

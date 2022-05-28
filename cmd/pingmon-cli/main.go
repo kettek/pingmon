@@ -33,12 +33,16 @@ func main() {
 		} else {
 			fmt.Printf("✋ ")
 		}
-		if *c.ShowMethods {
-			fmt.Printf("%s:", t.Method)
-		}
-		fmt.Printf(t.Address)
-		if *c.ShowPorts {
-			fmt.Printf(":%d", t.Port)
+		if t.Name != "" {
+			fmt.Printf(t.Name)
+		} else {
+			if *c.ShowMethods {
+				fmt.Printf("%s:", t.Method)
+			}
+			fmt.Printf(t.Address)
+			if *c.ShowPorts {
+				fmt.Printf(":%d", t.Port)
+			}
 		}
 		fmt.Printf(" @ %fms\n", t.Delay/1024)
 		if t.ExtendedStatus != "" {

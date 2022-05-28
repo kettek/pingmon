@@ -37,12 +37,16 @@ func refreshEntries() {
 	defer lock.Unlock()
 	for i, t := range *c.Targets {
 		title := fmt.Sprintf("%s ", t.Status)
-		if *c.ShowMethods {
-			title += fmt.Sprintf("%s:", t.Method)
-		}
-		title += t.Address
-		if *c.ShowPorts {
-			title += fmt.Sprintf(":%d", t.Port)
+		if t.Name != "" {
+			title += t.Name
+		} else {
+			if *c.ShowMethods {
+				title += fmt.Sprintf("%s:", t.Method)
+			}
+			title += t.Address
+			if *c.ShowPorts {
+				title += fmt.Sprintf(":%d", t.Port)
+			}
 		}
 		if t.Status == "online" {
 			title += fmt.Sprintf(" @ %.3fms", t.Delay/1024)
