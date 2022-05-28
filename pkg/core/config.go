@@ -20,6 +20,8 @@ type Config struct {
 	Assets         *string    `yaml:"assets"`
 	Title          *Title     `yaml:"title"`
 	PrivilegedPing *bool      `yaml:"privilegedPing"`
+	ShowMethods    *bool      `yaml:"showMethods"`
+	ShowPorts      *bool      `yaml:"showPorts"`
 }
 
 var DefaultConfig Config = Config{}
@@ -29,11 +31,15 @@ func init() {
 	assets := "./pkg/frontend/public"
 	timeout := 5
 	privilegedPing := true
+	showMethods := false
+	showPorts := false
 	DefaultConfig.Address = &addr
 	DefaultConfig.Assets = &assets
 	DefaultConfig.Rate = 30
 	DefaultConfig.Timeout = &timeout
 	DefaultConfig.PrivilegedPing = &privilegedPing
+	DefaultConfig.ShowMethods = &showMethods
+	DefaultConfig.ShowPorts = &showPorts
 
 	prefix := ""
 	name := "pingmon"
@@ -85,6 +91,12 @@ func (c *Config) FromYAML(p string) error {
 	}
 	if c2.PrivilegedPing != nil {
 		c.PrivilegedPing = c2.PrivilegedPing
+	}
+	if c2.ShowMethods != nil {
+		c.ShowMethods = c2.ShowMethods
+	}
+	if c2.ShowPorts != nil {
+		c.ShowPorts = c2.ShowPorts
 	}
 
 	return nil

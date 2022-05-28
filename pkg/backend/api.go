@@ -9,9 +9,17 @@ import (
 	"github.com/kettek/pingmon/pkg/core"
 )
 
-func (s *Server) handleTitleAPI(w http.ResponseWriter, req *http.Request) {
+func (s *Server) handleSettingsAPI(w http.ResponseWriter, req *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
-	b, err := json.Marshal(s.config.Title)
+	b, err := json.Marshal(struct {
+		Title       core.Title `json:"title"`
+		ShowMethods bool       `json:"showMethods"`
+		ShowPorts   bool       `json:"showPorts"`
+	}{
+		Title:       *s.config.Title,
+		ShowMethods: *s.config.ShowMethods,
+		ShowPorts:   *s.config.ShowPorts,
+	})
 	if err != nil {
 		panic(err)
 	}

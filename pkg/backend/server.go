@@ -28,7 +28,7 @@ func (s *Server) Run(c *core.Config) error {
 
 	fileHandler := http.FileServer(http.Dir(*c.Assets))
 
-	mux.HandleFunc("/api/title", s.handleTitleAPI)
+	mux.HandleFunc("/api/settings", s.handleSettingsAPI)
 	mux.HandleFunc("/api/services", s.handleServicesAPI)
 	mux.Handle("/ws", websocket.Handler(s.HandleWS))
 	mux.Handle("/", fileHandler)
