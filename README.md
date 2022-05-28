@@ -46,6 +46,40 @@ title:                      // will print "> pingmon <" in the browser
   suffix: " <"
 ```
 
+# API
+The backend exposes some HTTP APIs that can be used to access pingmon's information.
+
+## /api/title
+This returns a JSON structure representing the title information for the pingmon instance.
+
+```json
+{ // See README
+  "Prefix": "",
+  "Name": "",
+  "Suffix": ""
+}
+```
+
+## /api/services
+This endpoint returns a JSON structure matching the following:
+
+```json
+{
+  "elapsed": 0, // Time in nanoseconds
+  "targets": [
+    {
+      // See README
+      "method": "",
+      "address": "",
+      "port": 0,
+      "status": "",
+      "extendedStatus": "", // Extended status if there is one
+      "delay": 0 // Delay in milliseconds
+    }
+  ]
+}
+```
+
 # Service Installation
 
 ## Linux (gobl)
