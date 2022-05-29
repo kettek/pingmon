@@ -109,45 +109,52 @@
 	})
 </script>
 
+<h1>{title.Name}</h1>
 <main>
-	<h1>{title.Name}</h1>
-	{#if services.length}
-		{#each services as service}
+	<div class='services'>
+		{#if services.length}
+			{#each services as service}
+				<article>
+					<header>
+						{#if service.name}
+							{service.name}
+						{:else}
+							{(showMethods?service.method+':':'')+service.address+(showPorts?':'+service.port:'')}
+						{/if}
+					</header>
+					<section class="{service.status} {service.extendedStatus?'extended':''}" title="{service.extendedStatus}">{service.status}</section>
+					<aside>{service.delay/1000}ms</aside>
+				</article>
+			{/each}
+		{:else}
 			<article>
-				<header>
-					{#if service.name}
-						{service.name}
+				<header></header>
+				<section>
+					{#if !wsConnected}
+						disconnected
 					{:else}
-						{(showMethods?service.method+':':'')+service.address+(showPorts?':'+service.port:'')}
+						no services
 					{/if}
-				</header>
-				<section class="{service.status} {service.extendedStatus?'extended':''}" title="{service.extendedStatus}">{service.status}</section>
-				<aside>{service.delay/1000}ms</aside>
+				</section>
+				<aside></aside>
 			</article>
-		{/each}
-	{:else}
-		<article>
-			<header></header>
-			<section>
-				{#if !wsConnected}
-					disconnected
-				{:else}
-					no services
-				{/if}
-			</section>
-			<aside></aside>
-		</article>
-	{/if}
+		{/if}
+	</div>
 	<h4>updated {lastMoment}</h4>
 </main>
 <footer><a href="https://github.com/kettek/pingmon">pingmon</a> copyright © 2022 <a href="https://kettek.net">Ketchetwahmeegwun T. Southall</a>. Licensed under the <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPLv3</a></footer>
 
 <style>
 	main {
+		display: grid;
+		grid-template-rows: auto minmax(0, 1fr) auto;
 		text-align: center;
-		padding: 1em;
 		margin: 0 auto;
-		max-width: 35em;
+		overflow: hidden;
+	}
+	.services {
+		overflow: auto;
+		padding: 1em;
 	}
 
 	h1 {
@@ -155,6 +162,8 @@
 		text-transform: uppercase;
 		font-size: 4em;
 		font-weight: 100;
+		text-align: center;
+		margin: 0;
 	}
 
 	h4 {
@@ -163,8 +172,21 @@
 
 	article {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) 10em minmax(0, 1fr);
-		grid-template-rows: minmax(0, 1fr);
+		grid-template-rows: auto auto auto;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	@media only screen and (min-width: 768px) {
+		h1 {
+			margin: revert;
+		}
+		main {
+			max-width: 35em;
+		}
+		article {
+			grid-template-columns: minmax(0, 1fr) 10em minmax(0, 1fr);
+			grid-template-rows: minmax(0, 1fr);
+		}
 	}
 
 	header {
