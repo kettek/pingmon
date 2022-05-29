@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { MakeFavicon } from './favicon'
 	import { onMount } from 'svelte'
 
 	import type { Service } from './types/service'
@@ -92,9 +93,28 @@
 
 	function updateTitle() {
 		document.title = `(${services.filter(v=>v.status==='online').length}/${services.length}) ${title.Prefix}${title.Name}${title.Suffix}`
+		refreshFavicon()
+	}
+
+	let favicon: HTMLImageElement
+	function getFaviconImage() {
+		let link: HTMLLinkElement = document.head.querySelector("link[rel~='icon']")
+		let img = document.createElement('img')
+		img.addEventListener('load', _ => {
+			favicon = img
+			refreshFavicon()
+		})
+		img.src = link.href
+	}
+
+	function refreshFavicon() {
+		if (!favicon) return
+		let f = MakeFavicon(favicon, services.filter(v=>v.status==='online').length, services.length)
+		;(document.head.querySelector("link[rel~='icon']") as HTMLLinkElement).href = f
 	}
 
 	onMount(async () => {
+		getFaviconImage()
 		ws()
 		refresh()
 
