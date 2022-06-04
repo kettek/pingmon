@@ -17,7 +17,7 @@ func RefreshTargets(c *Config) {
 	for _, t := range *c.Targets {
 		if t.Method == "tcp" || t.Method == "udp" {
 			start := time.Now()
-			_, err := net.DialTimeout(t.Method, fmt.Sprintf("%s:%d", t.Address, t.Port), time.Duration(*c.Timeout)*time.Second)
+			conn, err := net.DialTimeout(t.Method, fmt.Sprintf("%s:%d", t.Address, t.Port), time.Duration(*c.Timeout)*time.Second)
 			if err != nil {
 				t.Status = "offline"
 				t.ExtendedStatus = err.Error()
@@ -33,6 +33,7 @@ func RefreshTargets(c *Config) {
 					}
 				}
 			} else {
+				conn.Close()
 				t.Status = "online"
 				t.ExtendedStatus = ""
 			}
@@ -42,7 +43,7 @@ func RefreshTargets(c *Config) {
 			dialer := net.Dialer{
 				Timeout: time.Duration(*c.Timeout) * time.Second,
 			}
-			_, err := tls.DialWithDialer(&dialer, "tcp", fmt.Sprintf("%s:%d", t.Address, t.Port), nil)
+			conn, err := tls.DialWithDialer(&dialer, "tcp", fmt.Sprintf("%s:%d", t.Address, t.Port), nil)
 
 			if err != nil {
 				switch err := err.(type) {
@@ -66,6 +67,7 @@ func RefreshTargets(c *Config) {
 					t.ExtendedStatus = err.Error()
 				}
 			} else {
+				conn.Close()
 				t.Status = "online"
 				t.ExtendedStatus = ""
 			}
